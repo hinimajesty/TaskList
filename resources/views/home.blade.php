@@ -11,17 +11,6 @@
 
     </head>
     <body>
-        <div id="app" class="container">
-            <div class="board">
-
-                <task-list title="To Do"></task-list>
-                <task-list title="Doing"></task-list>
-                <task-list title="Done"></task-list>
-
-                <add-task-list></add-task-list>
-                
-            </div>
-
-        </div>
+        <div id="app" class="container"></div>
     </body>
 </html>

@@ -167,9 +167,10 @@ table {
 
 .board {
 	display: flex;
-	justify-content: space-between;
+	column-gap: 20px ;
 	flex-basis:80%;
 	height: 80%;
+	flex-wrap: wrap;
 }
 
 .column {

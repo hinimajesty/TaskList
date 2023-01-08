@@ -4,13 +4,16 @@
        
 
        <div v-show="! addTaskList" class="" style="display:flex; flex-direction:column">
-            <input type="text" placeholder="Enter list tile">
+           <form @submit.prevent="addNewTaskList">
 
-            <div v-show="true" style="display:flex; align-items:center; gap:20px;">
-                <button class="btn" style="background-color: grey;cursor:pointer;">Add list</button>
-                <div @click="toggleAddTaskList" style="font-size:25px; font-weight:bold; font-family:sans-serif;cursor:pointer;">X</div>
-            </div>
-       
+                <input v-model="newTaskListTitle" type="text" placeholder="Enter list title">
+
+                <div v-show="true" style="display:flex; align-items:center; column-gap:20px;">
+                    <button class="btn" style="background-color: grey;cursor:pointer;font-size:13px;">Add list</button>
+                    <a @click="toggleAddTaskList" style="font-size:20px; font-family:sans-serif;cursor:pointer;">X</a>
+                </div>
+
+           </form>
        </div>
      </div>
 </template>
@@ -18,12 +21,18 @@
     export default {
         data(){
             return {
-                addTaskList : true
+                addTaskList : true,
+                newTaskListTitle: ''
             }
         }, 
         methods: {
             toggleAddTaskList(){
-                this.addTaskList = ! this.addTaskList
+                this.addTaskList = ! this.addTaskList;
+            }, 
+            addNewTaskList(){
+                this.$emit('addNewTaskList', this.newTaskListTitle);
+
+                this.newTaskListTitle = '';
             }
         }
     }
