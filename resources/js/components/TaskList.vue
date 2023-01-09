@@ -103,7 +103,7 @@
         mounted(){
             
             axios
-                .get('/api/list-cards?task_list_id=' + this.$vnode.key)
+                .get('/api/list-cards?access_token=7a444cc1db5e3893f9a3af23330&task_list_id=' + this.$vnode.key)
                 .then(response => (this.cards = response.data.data))
         }
     };
