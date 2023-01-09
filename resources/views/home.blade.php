@@ -6,11 +6,14 @@
 
         <title>Trello Board Clone</title>
 
-        @vite(['resources/css/style.scss', 'resources/js/app.js'])
+        <link href="{{mix('css/style.css')}}" rel="stylesheet">
+        
         <link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 
     </head>
     <body>
-        <div id="app" class="container"></div>
+        <div id="app"></div>
+
+        <script src="{{mix('js/app.js')}}"></script>
     </body>
 </html>

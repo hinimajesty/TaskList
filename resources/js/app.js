@@ -1,5 +1,8 @@
 import './bootstrap';
-import { createApp } from 'vue/dist/vue.esm-bundler.js';
+import Vue from 'vue';
 import App from './components/App.vue';
+import VModal from 'vue-js-modal'; 
 
-createApp(App).mount('#app');
+
+new Vue(App); 
+Vue.use(VModal);
