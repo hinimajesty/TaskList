@@ -2,13 +2,12 @@
     <div class="container">
         <div class="board">
             
-                <task-list v-for="list in taskLists" :title="list.title" :key="list.id" :taskLists="taskLists"></task-list>
+                <task-list @deleteTaskList="deleteTaskList" v-for="list in taskLists" :title="list.title" :key="list.id" :taskLists="taskLists"></task-list>
             
-           
-            <add-task-list @addNewTaskList="addNewTaskList"></add-task-list>
+                <add-task-list @addNewTaskList="addNewTaskList"></add-task-list>
         </div>
 
-        <modal name="display-task-modal" title="Some Title" description="Some Desc"></modal>
+        <!-- <modal name="display-task-modal" title="Some Title" description="Some Desc"></modal> -->
     </div>
 </template>
 
@@ -23,39 +22,36 @@
             'add-task-list': AddTaskList, 
             'task-list': TaskList, 
             'modal': DisplayTaskModal
-
         }, 
         data(){
             return {
                 taskLists: [
-                    {
-                        id: 1,
-                        title: 'First Task'
-                    },
-                    {
-                        id: 2,
-                        title: 'Second Task'
-                    },
-                    {
-                        id: 3,
-                        title: 'Third Task'
-                    },
+                   
                 ]
             }
         },
         methods: {
             addNewTaskList(title){
-                this.taskLists.push({
-                    id: this.taskLists.length + 1,
+                axios
+                .post('/api/task-lists',{
                     title: title
                 })
+                .then(response => (this.taskLists.push({
+                    id: response.data.data.id, 
+                    title: response.data.data.title
+                })))
             }, 
+            deleteTaskList(data){
+                
+            },
             show () {
                 this.$modal.show('display-task-modal');
             },
         }, 
-        mount () {
-            this.show()
+        mounted () {
+            axios
+                .get('/api/task-lists')
+                .then(response => (this.taskLists = response.data.data))
         }
     }
 </script>

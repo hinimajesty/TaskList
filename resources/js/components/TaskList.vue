@@ -2,7 +2,7 @@
     <div class="column">
         <div class="column__heading">
             <span>{{ title }}</span>
-            <a class="close-btn"></a>
+            <a @click="deleteTaskList" class="close-btn"></a>
         </div>
 
        <div v-show="!createCardVisible" class="cards">
@@ -25,15 +25,11 @@
 
         </div>
 
-        <draggable :list="cards" group="lists">
+        <draggable v-model="cards" group="lists" :key="draggableKey">
             <card v-for="card in cards" :title="card.title" :key="card.id"></card>
         </draggable>
      </div>
 </template>
-
-<style scoped>
-    
-</style>
 
 <script>
     import draggable from 'vuedraggable';
@@ -47,21 +43,7 @@
         data() {
             return {
                cards : [
-                    {
-                        title:"Title 1", 
-                        description:"First Things", 
-                        id: 1
-                    }, 
-                    {
-                        title:"Title 2", 
-                        description:"First Things", 
-                        id: 2
-                    },
-                    {
-                        title:"Title 3", 
-                        description:"First Things", 
-                        id: 3
-                    }
+
                ],
                createCardVisible: false, 
                newTitle: '', 
@@ -70,31 +52,51 @@
         },
         methods : {
             addNewCard(){
-                this.cards.push({
-                    id: this.cards.length + 1,
-                    title: this.newTitle,
-                    description: this.newDescription
-                });
+                axios
+                .post('/api/list-cards',{
+                    title: this.newTitle, 
+                    description: this.newDescription, 
+                    taskListId: this.$vnode.key
+                })
+                .then(response => (this.cards.push({
+                    id: response.data.data.task_list_id, 
+                    title: response.data.data.title, 
+                    description: response.data.data.description
+                })))
 
                 this.newTitle = ''; 
                 this.newDescription = '';
                 this.createCardVisible = false;
+            },
+            deleteTaskList(){
+                alert('Are you sure you want to delete this list ?')
+                
+                axios.delete('/api/task-lists?id=' + this.$vnode.key)
+                    .then((response) => {
+                        this.$destroy();
+                        this.$el.parentNode.removeChild(this.$el);
+                    })
             },
             showCreateCardForm() {
                 this.createCardVisible = ! this.createCardVisible;
             },
             cancelCreateCard(){
                 this.createCardVisible = false;
-            }, 
-            taskId(id){
-                return this.taskLists.length + '-' + id;
             }
         },  
         computed: {
-            
+            draggableKey(){
+                return this.cards.length + 1
+            }
         },
         props: {
             title: String
+        }, 
+        mounted(){
+            
+            axios
+                .get('/api/list-cards?task_list_id=' + this.$vnode.key)
+                .then(response => (this.cards = response.data.data))
         }
     };
 </script>
