@@ -23,10 +23,11 @@
                 </div>
             </form>
 
-            
         </div>
-        
-        <card v-for="card in cards" :title="card.title" :key="card.id"></card>
+
+        <draggable :list="cards" group="lists">
+            <card v-for="card in cards" :title="card.title" :key="card.id"></card>
+        </draggable>
      </div>
 </template>
 
@@ -35,12 +36,14 @@
 </style>
 
 <script>
+    import draggable from 'vuedraggable';
     import Card from './Card.vue'; 
 
     export default {
-        components: {
-            'card': Card
-        },
+    components: {
+        "card": Card,
+        draggable
+    },
         data() {
             return {
                cards : [
@@ -82,10 +85,16 @@
             },
             cancelCreateCard(){
                 this.createCardVisible = false;
+            }, 
+            taskId(id){
+                return this.taskLists.length + '-' + id;
             }
         },  
+        computed: {
+            
+        },
         props: {
-            title: String, 
+            title: String
         }
     };
 </script>

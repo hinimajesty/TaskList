@@ -1,21 +1,29 @@
 <template>
-    <div class="board">
+    <div class="container">
+        <div class="board">
+            
+                <task-list v-for="list in taskLists" :title="list.title" :key="list.id" :taskLists="taskLists"></task-list>
+            
+           
+            <add-task-list @addNewTaskList="addNewTaskList"></add-task-list>
+        </div>
 
-        <task-list v-for="list in taskLists" :title="list.title" :key="list.id"></task-list>
-
-        <add-task-list @addNewTaskList="addNewTaskList"></add-task-list>
-
+        <modal name="display-task-modal" title="Some Title" description="Some Desc"></modal>
     </div>
 </template>
 
 <script>
-    import AddTaskList from './AddTaskList.vue'; 
-    import TaskList from './TaskList.vue'; 
+    import AddTaskList from './AddTaskList.vue'
+    import TaskList from './TaskList.vue'
+    import DisplayTaskModal from './Modals/DisplayTaskModal'
 
     export default {
+        el: '#app',
         components: {
             'add-task-list': AddTaskList, 
-            'task-list': TaskList
+            'task-list': TaskList, 
+            'modal': DisplayTaskModal
+
         }, 
         data(){
             return {
@@ -41,7 +49,13 @@
                     id: this.taskLists.length + 1,
                     title: title
                 })
-            }
+            }, 
+            show () {
+                this.$modal.show('display-task-modal');
+            },
+        }, 
+        mount () {
+            this.show()
         }
     }
 </script>
