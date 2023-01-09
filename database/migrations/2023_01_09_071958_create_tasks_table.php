@@ -19,8 +19,7 @@ return new class extends Migration
             $table->string('title'); 
             $table->text('description');
             $table->timestamps();
-
-            $table->foreign('task_list_id')->references('id')->on('task_lists')->onDelete('cascade');
+            $table->softDeletes();
         });
     }
 

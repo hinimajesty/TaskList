@@ -34,7 +34,11 @@ class TaskListController extends Controller
 
     public function destroy()
     {
-        TaskList::whereId(request('id'))->delete();
+        
+        $list = TaskList::whereId(request('id'))->first();
+
+        $list->tasks()->delete(); 
+        $list->delete();
 
         return response()->json([
             'status' => 200, 

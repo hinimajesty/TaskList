@@ -10,4 +10,9 @@ class TaskList extends Model
     use HasFactory;
 
     protected $fillable = ['title'];
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class, 'task_list_id');
+    }
 }
