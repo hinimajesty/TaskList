@@ -25,7 +25,7 @@
 
         </div>
 
-        <draggable v-model="cards" group="lists" :key="draggableKey">
+        <draggable :move="taskMoved" v-model="cards" group="lists" :key="draggableKey">
             <card v-for="card in cards" :title="card.title" :key="card.id"></card>
         </draggable>
      </div>
@@ -51,6 +51,14 @@
             }
         },
         methods : {
+            taskMoved(e){
+                
+                axios.put('/api/list-cards',{
+                    newTaskListId: e.relatedContext.component.$options.parent.$vnode.key ,
+                    taskId: e.draggedContext.element.id
+                });
+
+            },
             addNewCard(){
                 axios
                 .post('/api/list-cards',{

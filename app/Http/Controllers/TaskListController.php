@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddTaskListRequest;
 use App\Models\TaskList;
 use App\Http\Resources\TaskListResource;
 
@@ -18,7 +19,7 @@ class TaskListController extends Controller
         ]);
     }
 
-    public function store()
+    public function store(AddTaskListRequest $request)
     {
         $taskList = TaskList::create([
             'title' => request('title')

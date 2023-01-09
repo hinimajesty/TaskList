@@ -13,7 +13,7 @@ class EditTaskListRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,8 @@ class EditTaskListRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'taskListId' => 'required', 
+            'title' => 'required'
         ];
     }
 }

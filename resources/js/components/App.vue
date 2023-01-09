@@ -2,7 +2,7 @@
     <div class="container">
         <div class="board">
             
-                <task-list @deleteTaskList="deleteTaskList" v-for="list in taskLists" :title="list.title" :key="list.id" :taskLists="taskLists"></task-list>
+                <task-list v-for="list in taskLists" :title="list.title" :key="list.id" :taskLists="taskLists"></task-list>
             
                 <add-task-list @addNewTaskList="addNewTaskList"></add-task-list>
         </div>
@@ -40,9 +40,6 @@
                     id: response.data.data.id, 
                     title: response.data.data.title
                 })))
-            }, 
-            deleteTaskList(data){
-                
             },
             show () {
                 this.$modal.show('display-task-modal');

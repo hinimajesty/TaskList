@@ -22,3 +22,4 @@ Route::delete('/task-lists', [TaskListController::class, 'destroy']);
 
 Route::get('/list-cards', [TaskController::class , 'index']);
 Route::post('/list-cards', [TaskController::class, 'store']);
+Route::put('/list-cards', [TaskController::class, 'update']);
