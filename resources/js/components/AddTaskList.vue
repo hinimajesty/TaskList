@@ -1,5 +1,5 @@
 <template>
-    <div class="column">
+    <div class="tasklist">
         <div class="column__addtasklist">
             <div @click="toggleAddTaskList" v-show="addTaskList" class="add-card-btn">+ Add a list</div>
 

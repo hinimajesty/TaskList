@@ -1,6 +1,6 @@
 <template>
-    <div class="column">
-        <div class="column__heading">
+    <div class="tasklist">
+        <div class="tasklist__heading">
             <span>{{ title }}</span>
             <a @click="deleteTaskList" class="close-btn"></a>
         </div>
@@ -9,16 +9,16 @@
             <div @click="showCreateCardForm" class="add-card-btn">+ Add a card</div>
        </div>
 
-        <div v-show="createCardVisible" class="create-card-form">
+        <div v-show="createCardVisible" class="tasklist__createcardform">
             <form @submit.prevent="addNewCard">
             
-                <textarea v-model="newTitle" class="textarea" name="" rows="1" placeholder="Tasks title"></textarea>
+                <textarea v-model="newTitle" class="createcardform__textarea" name="" rows="1" placeholder="Tasks title"></textarea>
                 <br/><br/>
                 
-                <textarea v-model="newDescription" class="textarea" name="" rows="2" placeholder="Describe the task"></textarea>
+                <textarea v-model="newDescription" class="createcardform__textarea" name="" rows="2" placeholder="Describe the task"></textarea>
 
-                <div class="card-btns" style="gap:20px;">
-                    <button class="btn" style="background-color: grey; font-size:13px;">Add Card</button>
+                <div class="createcardform__controls">
+                    <button class="btn">Add Card</button>
                     <a @click="cancelCreateCard()" style="font-family: sans-serif;width:10px; height:10px;cursor:pointer;">X</a>
                 </div>
             </form>
