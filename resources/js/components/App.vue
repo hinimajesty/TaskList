@@ -1,11 +1,13 @@
 <template>
-    <div class="container">
+    <div class="container" style="display:flex;">
         <div class="board">
             
                 <task-list v-for="list in taskLists" :title="list.title" :key="list.id" :taskLists="taskLists"></task-list>
             
                 <add-task-list @addNewTaskList="addNewTaskList"></add-task-list>
         </div>
+
+        <a class='btn' style="padding:10px;  background-color: red; font-size: 13px; margin-top:70vh;" href="/dump-db">Dump DB</a>
 
         <!-- <modal name="display-task-modal" title="Some Title" description="Some Desc"></modal> -->
     </div>
