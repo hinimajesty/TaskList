@@ -6,7 +6,7 @@
             
                 <add-task-list @addNewTaskList="addNewTaskList"></add-task-list>
         </div>
-
+        <button class="btn" @click="$modal.show('example-adaptive')">Adaptive</button>
         <!-- <modal name="display-task-modal" title="Some Title" description="Some Desc"></modal> -->
     </div>
 </template>
@@ -15,13 +15,14 @@
     import AddTaskList from './AddTaskList.vue'
     import TaskList from './TaskList.vue'
     import DisplayTaskModal from './Modals/DisplayTaskModal'
-
+    import Modal_Adaptive from './Modals/Modal_Adaptive'
     export default {
         el: '#app',
         components: {
             'add-task-list': AddTaskList, 
             'task-list': TaskList, 
-            'modal': DisplayTaskModal
+            'modal': DisplayTaskModal, 
+            Modal_Adaptive
         }, 
         data(){
             return {
