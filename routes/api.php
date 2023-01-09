@@ -20,6 +20,6 @@ Route::get('/task-lists', [TaskListController::class, 'index']);
 Route::post('/task-lists', [TaskListController::class, 'store']);
 Route::delete('/task-lists', [TaskListController::class, 'destroy']);
 
-Route::get('/list-cards', [TaskController::class , 'index']);
+Route::get('/list-cards', [TaskController::class , 'index'])->middleware('validate.access.token');
 Route::post('/list-cards', [TaskController::class, 'store']);
 Route::put('/list-cards', [TaskController::class, 'update']);

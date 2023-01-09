@@ -9,9 +9,33 @@ use App\Http\Resources\TaskResource;
 
 class TaskController extends Controller
 {
-    public function index(){
-        $tasks = Task::whereTaskListId(request('task_list_id'))->get(); 
+    public function index()
+    {
+        //TODO:write custom query builder 
 
+        $status = request('status');
+        $createdAt = request('created_at');
+        $taskListId = request('task_list_id');
+
+        $tasks = Task::whereNot('id',null);
+
+        if($taskListId)
+        {
+            $tasks = Task::whereTaskListId($taskListId); 
+        }
+
+        if($createdAt)
+        {
+            $tasks = $tasks->whereDate('created_at',$createdAt);
+        }
+
+        if($status == '0')
+        {
+            $tasks = $tasks->onlyTrashed();
+        }
+        
+        $tasks = $tasks->get();
+        
         return response()->json([
             'status' => 200, 
             'data' => TaskResource::collection($tasks), 
