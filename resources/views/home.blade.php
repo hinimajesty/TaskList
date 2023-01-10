@@ -6,14 +6,14 @@
 
         <title>Trello Board Clone</title>
 
-        <link href="{{mix('css/style.css')}}" rel="stylesheet">
-        
+        <link href="{{asset('css/style.css')}}" rel="stylesheet">
+
         <link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 
     </head>
     <body>
         <div id="app"></div>
 
-        <script src="{{mix('js/app.js')}}"></script>
+        <script src="{{asset('js/app.js')}}"></script>
     </body>
 </html>
