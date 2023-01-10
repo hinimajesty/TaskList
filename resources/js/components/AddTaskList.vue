@@ -6,7 +6,7 @@
             <div v-show="! addTaskList" class="" style="display:flex; flex-direction:column">
                 <form @submit.prevent="addNewTaskList">
 
-                        <input v-model="newTaskListTitle" type="text" placeholder="Enter list title">
+                        <input required v-model="newTaskListTitle" type="text" placeholder="Enter list title">
 
                         <div v-show="true" style="display:flex; align-items:center; column-gap:20px;">
                             <button class="btn" style="background-color: grey;cursor:pointer;font-size:13px;">Add list</button>

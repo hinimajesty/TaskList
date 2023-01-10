@@ -9,7 +9,7 @@
 
         <a class='btn' style="padding:10px;  background-color: red; font-size: 13px; margin-top:70vh;" href="/dump-db">Dump DB</a>
 
-        <!-- <modal name="display-task-modal" title="Some Title" description="Some Desc"></modal> -->
+        <!-- <modal name="display-task-modal" title="Some Title" description="Some Desc"></modal> -->   
     </div>
 </template>
 

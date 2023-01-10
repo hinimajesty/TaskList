@@ -12,10 +12,10 @@
         <div v-show="createCardVisible" class="create-card-form">
             <form @submit.prevent="addNewCard">
             
-                <textarea v-model="newTitle" class="textarea" name="" rows="1" placeholder="Tasks title"></textarea>
+                <textarea v-model="newTitle" class="textarea" name="" rows="1" placeholder="Tasks title" required></textarea>
                 <br/><br/>
                 
-                <textarea v-model="newDescription" class="textarea" name="" rows="2" placeholder="Describe the task"></textarea>
+                <textarea v-model="newDescription" class="textarea" name="" rows="2" placeholder="Describe the task" required></textarea>
 
                 <div class="card-btns" style="gap:20px;">
                     <button class="btn" style="background-color: grey; font-size:13px;">Add Card</button>
