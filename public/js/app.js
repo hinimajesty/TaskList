@@ -31,6 +31,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -66,6 +67,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _AddTaskList_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AddTaskList.vue */ "./resources/js/components/AddTaskList.vue");
 /* harmony import */ var _TaskList_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TaskList.vue */ "./resources/js/components/TaskList.vue");
 /* harmony import */ var _Modals_DisplayTaskModal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Modals/DisplayTaskModal */ "./resources/js/components/Modals/DisplayTaskModal.vue");
+//
+//
 //
 //
 //
@@ -194,7 +197,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuedraggable__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuedraggable */ "./node_modules/vuedraggable/dist/vuedraggable.umd.js");
 /* harmony import */ var vuedraggable__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vuedraggable__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _Card_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Card.vue */ "./resources/js/components/Card.vue");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
 //
 //
 //
@@ -228,7 +230,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
 
 
 
@@ -246,15 +247,21 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    taskMoved: function taskMoved(e) {
+      axios.put('/api/list-cards', {
+        newTaskListId: e.relatedContext.component.$options.parent.$vnode.key,
+        taskId: e.draggedContext.element.id
+      });
+    },
     addNewCard: function addNewCard() {
       var _this = this;
       axios.post('/api/list-cards', {
-        title: newTitle,
-        description: newDescription,
-        taskListId: (0,vue__WEBPACK_IMPORTED_MODULE_2__.getCurrentInstance)().vnode.key
+        title: this.newTitle,
+        description: this.newDescription,
+        taskListId: this.$vnode.key
       }).then(function (response) {
-        return _this.taskLists.push({
-          id: response.data.data.id,
+        return _this.cards.push({
+          id: response.data.data.task_list_id,
           title: response.data.data.title,
           description: response.data.data.description
         });
@@ -263,6 +270,14 @@ __webpack_require__.r(__webpack_exports__);
       this.newDescription = '';
       this.createCardVisible = false;
     },
+    deleteTaskList: function deleteTaskList() {
+      var _this2 = this;
+      alert('Are you sure you want to delete this list ?');
+      axios["delete"]('/api/task-lists?id=' + this.$vnode.key).then(function (response) {
+        _this2.$destroy();
+        _this2.$el.parentNode.removeChild(_this2.$el);
+      });
+    },
     showCreateCardForm: function showCreateCardForm() {
       this.createCardVisible = !this.createCardVisible;
     },
@@ -270,9 +285,19 @@ __webpack_require__.r(__webpack_exports__);
       this.createCardVisible = false;
     }
   },
-  computed: {},
+  computed: {
+    draggableKey: function draggableKey() {
+      return this.cards.length + 1;
+    }
+  },
   props: {
     title: String
+  },
+  mounted: function mounted() {
+    var _this3 = this;
+    axios.get('/api/list-cards?access_token=7a444cc1db5e3893f9a3af23330&task_list_id=' + this.$vnode.key).then(function (response) {
+      return _this3.cards = response.data.data;
+    });
   }
 });
 
@@ -296,7 +321,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 new vue__WEBPACK_IMPORTED_MODULE_3__["default"](_components_App_vue__WEBPACK_IMPORTED_MODULE_1__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_3__["default"].use((vue_js_modal__WEBPACK_IMPORTED_MODULE_2___default()));
+vue__WEBPACK_IMPORTED_MODULE_3__["default"].use((vue_js_modal__WEBPACK_IMPORTED_MODULE_2___default()), {
+  dialog: true,
+  dynamicDefaults: {
+    draggable: true
+  }
+});
 
 /***/ }),
 
@@ -23761,118 +23791,124 @@ var render = function () {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "column" }, [
-    _c(
-      "div",
-      {
-        directives: [
-          {
-            name: "show",
-            rawName: "v-show",
-            value: _vm.addTaskList,
-            expression: "addTaskList",
-          },
-        ],
-        staticClass: "add-card-btn",
-        on: { click: _vm.toggleAddTaskList },
-      },
-      [_vm._v("+ Add a list")]
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        directives: [
-          {
-            name: "show",
-            rawName: "v-show",
-            value: !_vm.addTaskList,
-            expression: "! addTaskList",
-          },
-        ],
-        staticStyle: { display: "flex", "flex-direction": "column" },
-      },
-      [
-        _c(
-          "form",
-          {
-            on: {
-              submit: function ($event) {
-                $event.preventDefault()
-                return _vm.addNewTaskList.apply(null, arguments)
+    _c("div", { staticClass: "column__addtasklist" }, [
+      _c(
+        "div",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.addTaskList,
+              expression: "addTaskList",
+            },
+          ],
+          staticClass: "add-card-btn",
+          on: { click: _vm.toggleAddTaskList },
+        },
+        [_vm._v("+ Add a list")]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: !_vm.addTaskList,
+              expression: "! addTaskList",
+            },
+          ],
+          staticStyle: { display: "flex", "flex-direction": "column" },
+        },
+        [
+          _c(
+            "form",
+            {
+              on: {
+                submit: function ($event) {
+                  $event.preventDefault()
+                  return _vm.addNewTaskList.apply(null, arguments)
+                },
               },
             },
-          },
-          [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.newTaskListTitle,
-                  expression: "newTaskListTitle",
-                },
-              ],
-              attrs: { type: "text", placeholder: "Enter list title" },
-              domProps: { value: _vm.newTaskListTitle },
-              on: {
-                input: function ($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.newTaskListTitle = $event.target.value
-                },
-              },
-            }),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
+            [
+              _c("input", {
                 directives: [
                   {
-                    name: "show",
-                    rawName: "v-show",
-                    value: true,
-                    expression: "true",
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.newTaskListTitle,
+                    expression: "newTaskListTitle",
                   },
                 ],
-                staticStyle: {
-                  display: "flex",
-                  "align-items": "center",
-                  "column-gap": "20px",
+                attrs: {
+                  required: "",
+                  type: "text",
+                  placeholder: "Enter list title",
                 },
-              },
-              [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn",
-                    staticStyle: {
-                      "background-color": "grey",
-                      cursor: "pointer",
-                      "font-size": "13px",
-                    },
+                domProps: { value: _vm.newTaskListTitle },
+                on: {
+                  input: function ($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.newTaskListTitle = $event.target.value
                   },
-                  [_vm._v("Add list")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticStyle: {
-                      "font-size": "20px",
-                      "font-family": "sans-serif",
-                      cursor: "pointer",
+                },
+              }),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: true,
+                      expression: "true",
                     },
-                    on: { click: _vm.toggleAddTaskList },
+                  ],
+                  staticStyle: {
+                    display: "flex",
+                    "align-items": "center",
+                    "column-gap": "20px",
                   },
-                  [_vm._v("X")]
-                ),
-              ]
-            ),
-          ]
-        ),
-      ]
-    ),
+                },
+                [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn",
+                      staticStyle: {
+                        "background-color": "grey",
+                        cursor: "pointer",
+                        "font-size": "13px",
+                      },
+                    },
+                    [_vm._v("Add list")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "a",
+                    {
+                      staticStyle: {
+                        "font-size": "20px",
+                        "font-family": "sans-serif",
+                        cursor: "pointer",
+                      },
+                      on: { click: _vm.toggleAddTaskList },
+                    },
+                    [_vm._v("X")]
+                  ),
+                ]
+              ),
+            ]
+          ),
+        ]
+      ),
+    ]),
   ])
 }
 var staticRenderFns = []
@@ -23898,23 +23934,42 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c(
-      "div",
-      { staticClass: "board" },
-      [
-        _vm._l(_vm.taskLists, function (list) {
-          return _c("task-list", {
-            key: list.id,
-            attrs: { title: list.title, taskLists: _vm.taskLists },
-          })
-        }),
-        _vm._v(" "),
-        _c("add-task-list", { on: { addNewTaskList: _vm.addNewTaskList } }),
-      ],
-      2
-    ),
-  ])
+  return _c(
+    "div",
+    { staticClass: "container", staticStyle: { display: "flex" } },
+    [
+      _c(
+        "div",
+        { staticClass: "board" },
+        [
+          _vm._l(_vm.taskLists, function (list) {
+            return _c("task-list", {
+              key: list.id,
+              attrs: { title: list.title, taskLists: _vm.taskLists },
+            })
+          }),
+          _vm._v(" "),
+          _c("add-task-list", { on: { addNewTaskList: _vm.addNewTaskList } }),
+        ],
+        2
+      ),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          staticClass: "btn",
+          staticStyle: {
+            padding: "10px",
+            "background-color": "red",
+            "font-size": "13px",
+            "margin-top": "70vh",
+          },
+          attrs: { href: "/dump-db" },
+        },
+        [_vm._v("Dump DB")]
+      ),
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -24002,7 +24057,10 @@ var render = function () {
       _c("div", { staticClass: "column__heading" }, [
         _c("span", [_vm._v(_vm._s(_vm.title))]),
         _vm._v(" "),
-        _c("a", { staticClass: "close-btn" }),
+        _c("a", {
+          staticClass: "close-btn",
+          on: { click: _vm.deleteTaskList },
+        }),
       ]),
       _vm._v(" "),
       _c(
@@ -24065,7 +24123,12 @@ var render = function () {
                   },
                 ],
                 staticClass: "textarea",
-                attrs: { name: "", rows: "1", placeholder: "Tasks title" },
+                attrs: {
+                  name: "",
+                  rows: "1",
+                  placeholder: "Tasks title",
+                  required: "",
+                },
                 domProps: { value: _vm.newTitle },
                 on: {
                   input: function ($event) {
@@ -24094,6 +24157,7 @@ var render = function () {
                   name: "",
                   rows: "2",
                   placeholder: "Describe the task",
+                  required: "",
                 },
                 domProps: { value: _vm.newDescription },
                 on: {
@@ -24148,7 +24212,17 @@ var render = function () {
       _vm._v(" "),
       _c(
         "draggable",
-        { attrs: { list: _vm.cards, group: "lists" } },
+        {
+          key: _vm.draggableKey,
+          attrs: { move: _vm.taskMoved, group: "lists" },
+          model: {
+            value: _vm.cards,
+            callback: function ($$v) {
+              _vm.cards = $$v
+            },
+            expression: "cards",
+          },
+        },
         _vm._l(_vm.cards, function (card) {
           return _c("card", { key: card.id, attrs: { title: card.title } })
         }),

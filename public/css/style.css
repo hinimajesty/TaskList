@@ -184,6 +184,10 @@ table {
   background-color: var(--ds-background-accent-gray-subtlest, #ebecf0);
 }
 
+.column__addtasklist {
+  height: 200px;
+}
+
 .close-btn {
   height: 20px;
   width: 15px;
