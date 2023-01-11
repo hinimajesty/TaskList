@@ -31,7 +31,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -67,7 +66,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _AddTaskList_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AddTaskList.vue */ "./resources/js/components/AddTaskList.vue");
 /* harmony import */ var _TaskList_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TaskList.vue */ "./resources/js/components/TaskList.vue");
 /* harmony import */ var _Modals_DisplayTaskModal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Modals/DisplayTaskModal */ "./resources/js/components/Modals/DisplayTaskModal.vue");
-//
 //
 //
 //
@@ -23790,8 +23788,8 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "column" }, [
-    _c("div", { staticClass: "column__addtasklist" }, [
+  return _c("div", { staticClass: "board__list" }, [
+    _c("div", { staticClass: "board__content" }, [
       _c(
         "div",
         {
@@ -23803,7 +23801,7 @@ var render = function () {
               expression: "addTaskList",
             },
           ],
-          staticClass: "add-card-btn",
+          staticClass: "list__btn",
           on: { click: _vm.toggleAddTaskList },
         },
         [_vm._v("+ Add a list")]
@@ -23820,7 +23818,7 @@ var render = function () {
               expression: "! addTaskList",
             },
           ],
-          staticStyle: { display: "flex", "flex-direction": "column" },
+          staticClass: "board__form",
         },
         [
           _c(
@@ -23843,6 +23841,7 @@ var render = function () {
                     expression: "newTaskListTitle",
                   },
                 ],
+                staticClass: "board__input",
                 attrs: {
                   required: "",
                   type: "text",
@@ -23870,34 +23869,17 @@ var render = function () {
                       expression: "true",
                     },
                   ],
-                  staticStyle: {
-                    display: "flex",
-                    "align-items": "center",
-                    "column-gap": "20px",
-                  },
+                  staticClass: "board__control",
                 },
                 [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn",
-                      staticStyle: {
-                        "background-color": "grey",
-                        cursor: "pointer",
-                        "font-size": "13px",
-                      },
-                    },
-                    [_vm._v("Add list")]
-                  ),
+                  _c("button", { staticClass: "board_btn" }, [
+                    _vm._v("Add list"),
+                  ]),
                   _vm._v(" "),
                   _c(
                     "a",
                     {
-                      staticStyle: {
-                        "font-size": "20px",
-                        "font-family": "sans-serif",
-                        cursor: "pointer",
-                      },
+                      staticClass: "board_btn",
                       on: { click: _vm.toggleAddTaskList },
                     },
                     [_vm._v("X")]
@@ -23934,42 +23916,27 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "container", staticStyle: { display: "flex" } },
-    [
-      _c(
-        "div",
-        { staticClass: "board" },
-        [
-          _vm._l(_vm.taskLists, function (list) {
-            return _c("task-list", {
-              key: list.id,
-              attrs: { title: list.title, taskLists: _vm.taskLists },
-            })
-          }),
-          _vm._v(" "),
-          _c("add-task-list", { on: { addNewTaskList: _vm.addNewTaskList } }),
-        ],
-        2
-      ),
-      _vm._v(" "),
-      _c(
-        "a",
-        {
-          staticClass: "btn",
-          staticStyle: {
-            padding: "10px",
-            "background-color": "red",
-            "font-size": "13px",
-            "margin-top": "70vh",
-          },
-          attrs: { href: "/dump-db" },
-        },
-        [_vm._v("Dump DB")]
-      ),
-    ]
-  )
+  return _c("div", { staticClass: "container" }, [
+    _c(
+      "div",
+      { staticClass: "board" },
+      [
+        _vm._l(_vm.taskLists, function (list) {
+          return _c("task-list", {
+            key: list.id,
+            attrs: { title: list.title, taskLists: _vm.taskLists },
+          })
+        }),
+        _vm._v(" "),
+        _c("add-task-list", { on: { addNewTaskList: _vm.addNewTaskList } }),
+      ],
+      2
+    ),
+    _vm._v(" "),
+    _c("a", { staticClass: "btn", attrs: { href: "/dump-db" } }, [
+      _vm._v("Dump DB"),
+    ]),
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -24052,13 +24019,13 @@ var render = function () {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "column" },
+    { staticClass: "board__list board__list--addtask" },
     [
-      _c("div", { staticClass: "column__heading" }, [
+      _c("div", { staticClass: "board__heading" }, [
         _c("span", [_vm._v(_vm._s(_vm.title))]),
         _vm._v(" "),
         _c("a", {
-          staticClass: "close-btn",
+          staticClass: "board__btn board_btn--close",
           on: { click: _vm.deleteTaskList },
         }),
       ]),
@@ -24074,13 +24041,13 @@ var render = function () {
               expression: "!createCardVisible",
             },
           ],
-          staticClass: "cards",
+          staticClass: "board__card",
         },
         [
           _c(
             "div",
             {
-              staticClass: "add-card-btn",
+              staticClass: "board__btn board__btn--addcard",
               on: { click: _vm.showCreateCardForm },
             },
             [_vm._v("+ Add a card")]
@@ -24099,7 +24066,7 @@ var render = function () {
               expression: "createCardVisible",
             },
           ],
-          staticClass: "create-card-form",
+          staticClass: "board__form board__form-createcard",
         },
         [
           _c(
@@ -24122,7 +24089,7 @@ var render = function () {
                     expression: "newTitle",
                   },
                 ],
-                staticClass: "textarea",
+                staticClass: "board_textarea",
                 attrs: {
                   name: "",
                   rows: "1",
@@ -24152,7 +24119,7 @@ var render = function () {
                     expression: "newDescription",
                   },
                 ],
-                staticClass: "textarea",
+                staticClass: "board_textarea",
                 attrs: {
                   name: "",
                   rows: "2",
@@ -24172,29 +24139,18 @@ var render = function () {
               _vm._v(" "),
               _c(
                 "div",
-                { staticClass: "card-btns", staticStyle: { gap: "20px" } },
+                { staticClass: "board__control board__control--cardbtns" },
                 [
                   _c(
                     "button",
-                    {
-                      staticClass: "btn",
-                      staticStyle: {
-                        "background-color": "grey",
-                        "font-size": "13px",
-                      },
-                    },
+                    { staticClass: "board__btn board_btn--addcard" },
                     [_vm._v("Add Card")]
                   ),
                   _vm._v(" "),
                   _c(
                     "a",
                     {
-                      staticStyle: {
-                        "font-family": "sans-serif",
-                        width: "10px",
-                        height: "10px",
-                        cursor: "pointer",
-                      },
+                      staticClass: "board__btn board__btn--closecard",
                       on: {
                         click: function ($event) {
                           return _vm.cancelCreateCard()

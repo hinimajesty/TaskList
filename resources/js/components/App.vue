@@ -1,29 +1,26 @@
 <template>
-    <div class="container" style="display:flex;">
+    <div class="container">
         <div class="board">
-            
                 <task-list v-for="list in taskLists" :title="list.title" :key="list.id" :taskLists="taskLists"></task-list>
             
                 <add-task-list @addNewTaskList="addNewTaskList"></add-task-list>
         </div>
 
-        <a class='btn' style="padding:10px;  background-color: red; font-size: 13px; margin-top:70vh;" href="/dump-db">Dump DB</a>
+        <a class='container__btn container__btn--danger' style="" href="/dump-db">Dump DB</a>
 
         <!-- <modal name="display-task-modal" title="Some Title" description="Some Desc"></modal> -->   
     </div>
 </template>
 
 <script>
-    import AddTaskList from './AddTaskList.vue'
     import TaskList from './TaskList.vue'
-    import DisplayTaskModal from './Modals/DisplayTaskModal'
-
+    import AddTaskList from './AddTaskList.vue'
+    
     export default {
         el: '#app',
         components: {
-            'add-task-list': AddTaskList, 
             'task-list': TaskList, 
-            'modal': DisplayTaskModal
+            'add-task-list': AddTaskList
         }, 
         data(){
             return {

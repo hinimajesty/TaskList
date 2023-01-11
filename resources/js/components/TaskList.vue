@@ -1,53 +1,34 @@
 <template>
-    <div class="column">
-        <div class="column__heading">
-            <span>{{ title }}</span>
-            <a @click="deleteTaskList" class="close-btn"></a>
-        </div>
+    <div class="list">
+        
+        <div class="list__heading"> <span>{{ title }}</span> </div>
 
-       <div v-show="!createCardVisible" class="cards">
-            <div @click="showCreateCardForm" class="add-card-btn">+ Add a card</div>
-       </div>
+        <add-task @addNewTask="addTask" :createTask="closeTaskForm"></add-task>
 
-        <div v-show="createCardVisible" class="create-card-form">
-            <form @submit.prevent="addNewCard">
-            
-                <textarea v-model="newTitle" class="textarea" name="" rows="1" placeholder="Tasks title" required></textarea>
-                <br/><br/>
-                
-                <textarea v-model="newDescription" class="textarea" name="" rows="2" placeholder="Describe the task" required></textarea>
-
-                <div class="card-btns" style="gap:20px;">
-                    <button class="btn" style="background-color: grey; font-size:13px;">Add Card</button>
-                    <a @click="cancelCreateCard()" style="font-family: sans-serif;width:10px; height:10px;cursor:pointer;">X</a>
-                </div>
-            </form>
-
-        </div>
-
-        <draggable :move="taskMoved" v-model="cards" group="lists" :key="draggableKey">
-            <card v-for="card in cards" :title="card.title" :key="card.id"></card>
+        <draggable :move="taskMoved" v-model="tasks" group="tasks" :key="draggableKey">
+            <task v-for="task in tasks" :title="task.title" :key="task.id"></task>
         </draggable>
+       
      </div>
 </template>
 
 <script>
-    import draggable from 'vuedraggable';
-    import Card from './Card.vue'; 
+    import Draggable from 'vuedraggable';
+    import Task from './Task.vue'
+    import AddTask from './AddTask.vue'
 
     export default {
-    components: {
-        "card": Card,
-        draggable
-    },
+        components: {
+            "task": Task, 
+            "add-task": AddTask,
+            "draggable": Draggable
+        },
         data() {
             return {
-               cards : [
-
-               ],
-               createCardVisible: false, 
-               newTitle: '', 
-               newDescription: ''
+               closeTaskForm : true,
+               tasks : [
+                    
+               ]
             }
         },
         methods : {
@@ -59,42 +40,32 @@
                 });
 
             },
-            addNewCard(){
+            addTask(title,description){
                 axios
                 .post('/api/list-cards',{
-                    title: this.newTitle, 
-                    description: this.newDescription, 
+                    title: title, 
+                    description: description, 
                     taskListId: this.$vnode.key
                 })
-                .then(response => (this.cards.push({
+                .then(response => (this.tasks.push({
                     id: response.data.data.task_list_id, 
                     title: response.data.data.title, 
                     description: response.data.data.description
                 })))
-
-                this.newTitle = ''; 
-                this.newDescription = '';
-                this.createCardVisible = false;
             },
             deleteTaskList(){
-                alert('Are you sure you want to delete this list ?')
+                confirm('Are you sure you want to delete this list ?')
                 
                 axios.delete('/api/task-lists?id=' + this.$vnode.key)
                     .then((response) => {
                         this.$destroy();
                         this.$el.parentNode.removeChild(this.$el);
-                    })
-            },
-            showCreateCardForm() {
-                this.createCardVisible = ! this.createCardVisible;
-            },
-            cancelCreateCard(){
-                this.createCardVisible = false;
-            }
+                })
+            }, 
         },  
         computed: {
             draggableKey(){
-                return this.cards.length + 1
+                return this.tasks.length + 1
             }
         },
         props: {
@@ -104,7 +75,7 @@
             
             axios
                 .get('/api/list-cards?access_token=7a444cc1db5e3893f9a3af23330&task_list_id=' + this.$vnode.key)
-                .then(response => (this.cards = response.data.data))
+                .then(response => (this.tasks = response.data.data))
         }
     };
 </script>

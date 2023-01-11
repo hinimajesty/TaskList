@@ -1,5 +1,5 @@
 <template>
-    <div class="card">
+    <div class="task">
         {{ title }}
     </div>
 </template>
