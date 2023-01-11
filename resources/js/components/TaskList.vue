@@ -6,7 +6,7 @@
         <add-task @addNewTask="addTask" :createTask="closeTaskForm"></add-task>
 
         <draggable :move="taskMoved" v-model="tasks" group="tasks" :key="draggableKey">
-            <task v-for="task in tasks" :title="task.title" :key="task.id"></task>
+            <task v-for="task in sortedTasks" :title="task.title" :key="task.id"></task>
         </draggable>
        
      </div>
@@ -66,6 +66,10 @@
         computed: {
             draggableKey(){
                 return this.tasks.length + 1
+            }, 
+            sortedTasks()
+            {
+                return this.tasks.reverse()
             }
         },
         props: {
