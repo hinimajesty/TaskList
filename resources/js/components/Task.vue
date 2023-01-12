@@ -1,5 +1,5 @@
 <template>
-    <div class="task">
+    <div class="task" @click="showInModal">
         {{ title }}
     </div>
 </template>
@@ -8,6 +8,11 @@
     export default {
         data(){
             return {}
+        },
+        methods: {
+            showInModal(){
+                this.$emit('showInModal');
+            }
         },
         props: {
             title: String

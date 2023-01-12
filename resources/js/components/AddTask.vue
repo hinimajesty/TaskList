@@ -17,7 +17,7 @@
 
                 <div class="form__control">
                     <button class="form__btn form__btn--addtask">Add Task</button>
-                    <a @click="cancelCreateTask()" class="form__btn form__btn--close">X</a>
+                    <a @click="cancelCreateTask()" class="textBtn textBtn--close">X</a>
                 </div>
             </form>
 

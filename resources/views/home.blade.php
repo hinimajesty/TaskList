@@ -7,6 +7,7 @@
         <title>Trello Board Clone</title>
 
         <link href="{{asset('css/reset.css')}}" rel="stylesheet">
+        <link href="{{asset('css/modal.css')}}" rel="stylesheet">
         <link href="{{mix('css/style.css')}}" rel="stylesheet">
 
     </head>

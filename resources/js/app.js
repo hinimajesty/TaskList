@@ -6,9 +6,4 @@ import VModal from 'vue-js-modal';
 
 new Vue(App);
 
-Vue.use(VModal, {
-    dialog: true,
-    dynamicDefaults: {
-        draggable: true
-    }
-});
+Vue.use(VModal);

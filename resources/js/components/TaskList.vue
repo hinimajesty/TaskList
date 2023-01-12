@@ -1,14 +1,20 @@
 <template>
     <div class="list">
         
-        <div class="list__heading"> <span>{{ title }}</span> </div>
+        <div class="list__header"> 
+            <div class="list__header list__header--heading"> <span>{{ title }}</span> </div>
+            <div @click="deleteTaskList">
+                <span class="list__header list__header--close">X</span>
+            </div>
+        </div>
 
         <add-task @addNewTask="addTask" :createTask="closeTaskForm"></add-task>
 
         <draggable :move="taskMoved" v-model="tasks" group="tasks" :key="draggableKey">
-            <task v-for="task in sortedTasks" :title="task.title" :key="task.id"></task>
+            <task @showInModal="openTask(task)" v-for="task in tasks" :title="task.title" :key="task.id"></task>
         </draggable>
        
+        <task-modal @taskUpdated="updateTask" :taskId="taskIdProp" :description="descriptionProp" :title="titleProp" v-if="showModal" @close="showModal = false"></task-modal>
      </div>
 </template>
 
@@ -16,22 +22,34 @@
     import Draggable from 'vuedraggable';
     import Task from './Task.vue'
     import AddTask from './AddTask.vue'
+    import DisplayTaskModal from './modals/TaskModal.vue'
 
     export default {
         components: {
             "task": Task, 
             "add-task": AddTask,
-            "draggable": Draggable
+            "draggable": Draggable,
+            'task-modal': DisplayTaskModal
         },
         data() {
             return {
                closeTaskForm : true,
+               showModal: false,
+               taskIdProp: null,
+               descriptionProp:null,
+               titleProp: null, 
                tasks : [
                     
                ]
             }
         },
         methods : {
+            openTask(task){
+                this.showModal = true
+                this.titleProp = task.title
+                this.descriptionProp = task.description
+                this.taskIdProp = task.id
+            },
             taskMoved(e){
                 
                 axios.put('/api/list-cards',{
@@ -54,7 +72,7 @@
                 })))
             },
             deleteTaskList(){
-                confirm('Are you sure you want to delete this list ?')
+                if (!confirm('Are you sure you want to delete this list ?')) return;
                 
                 axios.delete('/api/task-lists?id=' + this.$vnode.key)
                     .then((response) => {
@@ -62,6 +80,19 @@
                         this.$el.parentNode.removeChild(this.$el);
                 })
             }, 
+            updateTask(newTask)
+            {
+                this.tasks.forEach(function (task) {
+                    if (task.id === newTask.taskId) {
+                        task.title = newTask.taskTitle, 
+                        task.description = newTask.taskDescription
+                    }
+                });
+
+                alert('Task changed successfully'); 
+
+                this.showModal = false;
+            }
         },  
         computed: {
             draggableKey(){

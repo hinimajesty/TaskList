@@ -7,15 +7,13 @@
         </div>
 
         <a class='container__btn container__btn--danger' style="" href="/dump-db">Dump DB</a>
-
-        <!-- <modal name="display-task-modal" title="Some Title" description="Some Desc"></modal> -->   
     </div>
 </template>
 
 <script>
     import TaskList from './TaskList.vue'
     import AddTaskList from './AddTaskList.vue'
-    
+
     export default {
         el: '#app',
         components: {
@@ -24,6 +22,7 @@
         }, 
         data(){
             return {
+                title : '', 
                 taskLists: [
                    
                 ]
@@ -39,15 +38,12 @@
                     id: response.data.data.id, 
                     title: response.data.data.title
                 })))
-            },
-            show () {
-                this.$modal.show('display-task-modal');
-            },
-        }, 
+            }
+        },
         mounted () {
             axios
                 .get('/api/task-lists')
                 .then(response => (this.taskLists = response.data.data))
-        }
     }
+}
 </script>
